@@ -1,0 +1,139 @@
+{
+    "name": "EC-CUBE_2_12_1",
+        "version": "2.12.1",
+        "category": { "language": "application", "framework": "eccube", "priority": 0 },
+        "ui-name": "EC-CUBE",
+        "ui-summary": "eccube_v2_12_1",
+        "description": "EC-CUBE(イーシーキューブ)は、オープンソースのECサイトプラットフォームです。C4SAのコンテクスト機能を利用することで、ECサイトを簡単に設置することができます。コンテクスト作成後EC-CUBEの設定を行って下さい。",
+        "description-url": "https://www.ec-cube.net/",
+        "parameters": {
+            "mysql_password": { "type": "string",
+                "restr": "[0-9A-Za-z]{8,16}",
+                "auto": "[0-9A-Za-z]{8}" },
+            "webdav_password": { "type": "string",
+                "restr": "[0-9A-Za-z]{8,16}",
+                "auto": "[0-9A-Za-z]{8}" }
+        },
+        "context_resources": ["web_root.tar.gz", "nginx.conf"],
+        "canvas_version": "1.0.0",
+        "instruction": [
+        { "type": "appliance",
+            "appliance_name": "logviewer.local",
+            "appliance_id": "logviewer_id",
+            "state": { }
+        },
+        { "type": "appliance",
+            "appliance_name": "db.mysql.shared",
+            "appliance_id": "mysql_id",
+            "state": {
+                "password": { "type": "variable",
+                    "name": "mysql_password" },
+                "tier": ["5"]
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "disk.shared",
+            "appliance_id": "disk_id",
+            "state": {
+                "passwd": { "type": "variable",
+                    "name": "webdav_password" }
+            }
+        },
+        { "type": "signal",
+            "appliance_id": "disk_id",
+            "signal": "install",
+            "in": {
+                "type": "archive",
+                "resource": "web_root.tar.gz"
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "interpreter.php",
+            "appliance_id": "php_id",
+            "state": {
+                "version": "5.3.15",
+                "env_ids": []
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "util.env-manager",
+            "appliance_id": "env_id",
+            "state": {
+                "env_ids": ["mysql_id"],
+                "envs": []
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "supervisor.local",
+            "appliance_id": "supervisor_id",
+            "state": {
+                "ini" : "",
+                "env_ids": []
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "daemon.php.php-fpm",
+            "appliance_id": "fpm_id",
+            "state": {
+		"supervisor_id": "supervisor_id",
+                "interpreter_id": "php_id",
+                "max_children": 2,
+                "project_root": { "type": "template_string",
+                    "template": "/canvases/${canvas_id}/data/${disk_id}/public_html" },
+                "env_ids": ["env_id"]
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "terminal.shell",
+            "appliance_id": "shell_id",
+            "state": {
+		"supervisor_id": "supervisor_id",
+                "commands": ["/bin/ls", "/bin/cat", "/usr/bin/git"],
+                "working_directory": { "type": "template_string",
+                    "template": "/canvases/${canvas_id}/data/${disk_id}" },
+                "env_ids": ["env_id","php_id","supervisor_id"]
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "http-server.nginx",
+            "appliance_id": "http_id",
+            "state": {
+		"supervisor_id": "supervisor_id",
+		"hosts": {
+                    "http_conf_id": {
+			"type": "custom_template",
+			"nginx_conf": { "type": "file",
+					"file": "nginx.conf" },
+			"variables": {
+                            "disk_id": "disk_id",
+                            "fpm_id": "fpm_id"
+			}
+                    }
+		}
+            }
+        },
+        { "type": "signal",
+            "appliance_id": "supervisor_id",
+            "signal": "supervisorctl",
+            "in": {
+                "action": "reload",
+                "process": ""
+            }
+        },
+        { "type": "appliance",
+            "appliance_name": "gateway.local",
+            "appliance_id": "gateway_id",
+            "state": {
+                "admin_settings": [{ "id": "shell_id", "type": "standard" },
+                { "id": "disk_id", "type": "webdav" }],
+                "server_settings": [
+                {
+                    "server_name_id": "http_conf_id",
+                    "server_names": [],
+                    "socket_id": "http_id"
+                }
+                ]
+            }
+        }
+    ]
+}

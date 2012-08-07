@@ -14,5 +14,3 @@ ${BIN_TAR} czf ../krm.tar.gz web_root.tar.gz nginx.conf
 ${BIN_RM} ./contexts/krm/
 
 ## end
-
-

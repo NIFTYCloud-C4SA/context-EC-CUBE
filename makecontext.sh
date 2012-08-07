@@ -4,13 +4,6 @@
 
 BIN_RM="/bin/rm -rf"
 BIN_TAR="/usr/bin/tar"
-BIN_MKDIR="/bin/mkdir"
-
-
-PATH_WORKDIR="./workdir"
-
-## make context
-${BIN_MKDIR} ${PATH_WORKDIR}
 
 
 ## create archive

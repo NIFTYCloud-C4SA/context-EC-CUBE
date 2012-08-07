@@ -4,7 +4,7 @@
         "category": { "language": "application", "framework": "eccube", "priority": 0 },
         "ui-name": "EC-CUBE",
         "ui-summary": "eccube_v2_12_1",
-        "description": "EC-CUBE(イーシーキューブ)は、オープンソースのECサイトプラットフォームです。C4SAのコンテクスト機能を利用することで、ECサイトを簡単に設置することができます。コンテクスト作成後EC-CUBEの設定を行って下さい。",
+        "description": "EC-CUBE(イーシーキューブ)は、日本発のECオープンプラットフォームです。C4SAのコンテクスト機能を利用することで、ECサイトを簡単に設置することができます。コンテクスト作成後EC-CUBEの設定を行って下さい。",
         "description-url": "https://www.ec-cube.net/",
         "parameters": {
             "mysql_password": { "type": "string",

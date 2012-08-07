@@ -690,7 +690,7 @@ function lfInitWebParam($objWebParam) {
 }
 
 // DBパラメーター情報の初期化
-//以下、大川による変更箇所
+//以下、ニフティクラウドC4SAコンテクスト用の変更箇所
 //define文を追加
 function lfInitDBParam($objDBParam) {
 	define('DB_NAME', getenv('C4SA_MYSQL_DB'));
@@ -727,7 +727,7 @@ function lfInitDBParam($objDBParam) {
     } else {
         $db_user = 'eccube_db_user';
     }
-
+	//パスワードの環境変数を調べる
 	if (defined('DB_PASSWORD')) {
 		$db_password = DB_PASSWORD;
 	} else {

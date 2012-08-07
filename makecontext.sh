@@ -2,10 +2,8 @@
 
 ## make EC-CUBE context
 
-BIN_MV="/bin/mv"
 BIN_RM="/bin/rm -rf"
 BIN_TAR="/usr/bin/tar"
-BIN_UNZIP="/usr/bin/unzip"
 BIN_MKDIR="/bin/mkdir"
 
 

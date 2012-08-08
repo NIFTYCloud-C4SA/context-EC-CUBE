@@ -693,6 +693,7 @@ function lfInitWebParam($objWebParam) {
 //以下、ニフティクラウドC4SAコンテクスト用の変更箇所
 //define文を追加
 function lfInitDBParam($objDBParam) {
+	define('DB_TYPE', 'mysql');
 	define('DB_NAME', getenv('C4SA_MYSQL_DB'));
 	define('DB_USER', getenv('C4SA_MYSQL_USER'));
 	define('DB_PASSWORD', getenv('C4SA_MYSQL_PASSWORD'));

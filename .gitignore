@@ -13,7 +13,5 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # EC-CUBE
-contexts/krm/public_html/*
-!contexts/krm/public_html/.gitkeep
 contexts/krm/web_root.tar.gz
 contexts/krm.tar.gz
